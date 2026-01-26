@@ -15,9 +15,13 @@ stages:
       - job: Downloadjob
         steps:
           - task: Bash@3
+            displayName: Clone Git Repo
             inputs:
               targetType: inline
               script: 'git clone https://github.com/Rahul917797/maven.git'
-
-
+          - task: Bash@3
+            displayName: Build with Maven
+            inputs: 
+              targetType: inline
+              script: 'cd /home/azureuser/myagent/_work/1/s;mvn package'
 
