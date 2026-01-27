@@ -11,14 +11,17 @@ pool:
 
 steps:
   - task: Bash@3
+    displayName: Clone code from github
     inputs:
       targetType: 'inline'
       script: 'git clone https://github.com/Rahul917797/maven.git'
   - task: Bash@3
+    displayName: Build with Maven
     inputs:
      targetType: inline
      script: 'cd /home/azureuser/myagent/_work/2/s;mvn package'
   - task: Bash@3
+    displayName: Create Docker file
     inputs:
      targetType: inline
      script: 'cp /home/azureuser/myagent/_work/2/s/webapp/target/webapp.war .'
@@ -27,3 +30,8 @@ steps:
       FROM tomee
       COPY webapp.war /usr/local/tomee/webapps/myapp.war
       EOF
+  - task: Bash@3
+    displayName: Create Docker Image
+    inputs:
+     targetType: inline
+     script: 'docker build -t rahul917797/tomcat .'
