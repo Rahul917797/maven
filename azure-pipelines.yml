@@ -34,4 +34,9 @@ steps:
     displayName: Create Docker Image
     inputs:
      targetType: inline
-     script: 'docker build -t rahul917797/tomcat .'
+     script: 'docker build -t dockerregistery511197.azurecr.io/tomcat .'
+  - task: Bash@3
+    displayName: Push to ACR Registry
+    inputs:
+     targetType: inline
+     script: 'docker push dockerregistery511197.azurecr.io/tomcat'
