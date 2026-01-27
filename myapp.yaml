@@ -20,7 +20,6 @@ spec:
           image: dockerregistery511197.azurecr.io/tomcat
 
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -36,4 +35,4 @@ spec:
     app: tomcat
   type: LoadBalancer
 
----
+...
