@@ -44,4 +44,4 @@ steps:
     displayName: Create container in QA Server
     inputs:
      targetType: inline
-     script: 'ssh azureuser@20.25.210.11 docker run --name tomcat-app -d -P dockerregistery511197.azurecr.io'
+     script: 'ssh azureuser@20.25.210.11 docker run --name tomcat-app -d -P dockerregistery511197.azurecr.io/tomcat'
