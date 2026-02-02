@@ -56,4 +56,17 @@ stages:
           - task: Bash@3
             inputs:
               targetType: inline
-              script: 'docker build -t myreg1241.azurecr.io/tomcat .'
+              script: |
+                # Clone repo and build WAR
+                git clone https://github.com/Rahul917797/maven.git
+                cd maven
+                mvn package
+
+                # Create Dockerfile
+                cat << EOF > Dockerfile
+                FROM tomee
+                COPY target/webapp.war /usr/local/tomee/webapps/test.war
+                EOF
+
+                # Build Docker image
+                docker build -t myreg1241.azurecr.io/tomcat .
