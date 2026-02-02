@@ -41,14 +41,15 @@ stages:
           - task: Bash@3
             inputs:
               targetType: inline
-              script: |
+              script: 'cp /home/azureuser/myagent/_work/2/s/webapp/target/webapp.war .'
+          - script: |
                 cat << EOF > Dockerfile
                 FROM tomee
                 COPY /webapp/target/webapp.war /usr/local/tomee/webapps/test.war
                 EOF
 
-  - stage: BuildDockerImage
-    displayName: BuildDockerImage
+  - stage: BuildDocker
+    displayName: BuildDockerimage
     jobs:
       - job: BuildDockerImage
         displayName: BuildDockerImage
@@ -56,17 +57,4 @@ stages:
           - task: Bash@3
             inputs:
               targetType: inline
-              script: |
-                # Clone repo and build WAR
-                git clone https://github.com/Rahul917797/maven.git
-                cd maven
-                mvn package
-
-                # Create Dockerfile
-                cat << EOF > Dockerfile
-                FROM tomee
-                COPY target/webapp.war /usr/local/tomee/webapps/test.war
-                EOF
-
-                # Build Docker image
-                docker build -t myreg1241.azurecr.io/tomcat .
+              script: 'docker build -t myreg1241.azurecr.io/tomcat'
