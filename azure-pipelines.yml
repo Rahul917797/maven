@@ -10,15 +10,24 @@ pool:
   name: 'Dev-Server'
 
 stages:
-  - stage: 
-    displayName: 
+  - stage: Download
+    displayName: Download
     jobs:
-      - job: 
-        displayName: 
+      - job: Download
+        displayName: Download
         steps:
           - task: Bash@3
             inputs:
               targetType: inline
               script: 'git clone https://github.com/Rahul917797/maven.git'
 
-          
+  - stage: Build_with_Maven
+    displayName: Build with Maven
+    jobs:
+      - job: Build
+        displayName: Build with Maven
+        steps:
+          - task: Bash@3
+            inputs:
+              targetType: inline
+              script: 'cd /home/azureuser/myagent/_work/2/s;mvn package'
