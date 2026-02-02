@@ -28,8 +28,8 @@ stages:
               targetType: inline
               script: 'cd /home/azureuser/myagent/_work/2/s;mvn package'
 
-  - stage: CreateDockerfile
-    displayName: CreateDockerfile
+  - stage: CreateDockerfileandImage
+    displayName: CreateDockerfileandImage
     jobs:
       - job: CreateDockerfile
         displayName: CreateDockerfile
@@ -37,20 +37,24 @@ stages:
           - task: Bash@3
             inputs:
               targetType: inline
-              script: 'cp /home/azureuser/myagent/_work/2/s/webapp/target/*.war .'
-          - script: |
+              
+              script: |
                 cat << EOF > Dockerfile
                 FROM tomee
-                COPY *.war /usr/local/tomee/webapps/test.war
+                COPY webapp/target/webapp.war /usr/local/tomee/webapps/test.war
                 EOF
-
-  - stage: BuildDocker
-    displayName: BuildDockerimage
-    jobs:
-      - job: BuildDockerImage
-        displayName: BuildDockerImage
+      - job: CreateDockerImage
+        displayName: CreateDockerImage
         steps:
           - task: Bash@3
             inputs:
               targetType: inline
-              script: 'docker build -t myreg1241.azurecr.io/tomcat .'
+              
+              script: |
+                cat << EOF > Dockerfile
+                FROM tomee
+                COPY webapp/target/webapp.war /usr/local/tomee/webapps/test.war
+                EOF
+                script: 'docker build -t myreg1241.azurecr.io/tomcat .'
+
+  
