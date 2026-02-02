@@ -57,4 +57,4 @@ stages:
           - task: Bash@3
             inputs:
               targetType: inline
-              script: 'docker build -t myreg1241.azurecr.io/tomcat'
+              script: 'docker build -t myreg1241.azurecr.io/tomcat .'
