@@ -15,7 +15,7 @@ stages:
     - task: Bash@3
       inputs:
         targetType: inline
-        script: 'git clone https://github.com/Rahul917797/maven.git'
+        script: 'git clone https://github.com/Rahul917797/maven.git /home/azureuser/myagent/_work/1/s'
 
 - stage: Build_with_Maven
   displayName: Build with Maven
@@ -26,7 +26,7 @@ stages:
     - task: Bash@3
       inputs:
         targetType: inline
-        script: 'cd /home/azureuser/myagent/_work/2/s;mvn package'
+        script: 'cd /home/azureuser/myagent/_work/1/s; mvn package'
 
 - stage: CreateDockerfile
   displayName: CreateDockerfile
@@ -38,9 +38,8 @@ stages:
       inputs:
         targetType: inline
         script: |
-         
-          cp /home/azureuser/myagent/_work/2/s/webapp/target/webapp.war .
-          cat <<EOF > Dockerfile
+          cp /home/azureuser/myagent/_work/1/s/webapp/target/webapp.war /home/azureuser/myagent/_work/1/s
+          cat <<EOF > /home/azureuser/myagent/_work/1/s/Dockerfile
           FROM tomee
           COPY webapp.war /usr/local/tomee/webapps/test.war
           EOF
@@ -54,7 +53,4 @@ stages:
     - task: Bash@3
       inputs:
         targetType: inline
-        script: 'docker build -t myreg1241.azurecr.io/tomcat .'
-          
-
-  
+        script: 'cd /home/azureuser/myagent/_work/1/s; docker build -t myreg1241.azurecr.io/tomcat .'
