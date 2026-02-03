@@ -6,56 +6,53 @@ pool:
   name: 'Dev-Server'
 
 stages:
-  - stage: Download
+- stage: Download
+  displayName: Download
+  jobs:
+  - job: Download
     displayName: Download
-    jobs:
-      - job: Download
-        displayName: Download
-        steps:
-          - task: Bash@3
-            inputs:
-              targetType: inline
-              script: 'git clone https://github.com/Rahul917797/maven.git'
+    steps:
+    - task: Bash@3
+      inputs:
+        targetType: inline
+        script: |
+          git clone https://github.com/Rahul917797/maven.git
 
-  - stage: Build_with_Maven
+- stage: Build_with_Maven
+  displayName: Build with Maven
+  jobs:
+  - job: Build
     displayName: Build with Maven
-    jobs:
-      - job: Build
-        displayName: Build with Maven
-        steps:
-          - task: Bash@3
-            inputs:
-              targetType: inline
-              script: 'cd /home/azureuser/myagent/_work/2/s;mvn package'
+    steps:
+    - task: Bash@3
+      inputs:
+        targetType: inline
+        script: |
+          cd /home/azureuser/myagent/_work/2/s
+          mvn package
 
-  - stage: CreateDockerfileandImage
-    displayName: CreateDockerfileandImage
-    jobs:
-      - job: CreateDockerfile
-        displayName: CreateDockerfile
-        steps:
-          - task: Bash@3
-            inputs:
-              targetType: inline
-              
-              script: |
-                cat << EOF > Dockerfile
-                FROM tomee
-                COPY webapp/target/webapp.war /usr/local/tomee/webapps/test.war
-                EOF
-      
-      - job: CreateDockerImage
-        displayName: CreateDockerImage
-        steps:
-          - task: Bash@3
-            inputs:
-              targetType: inline
-              
-              script: |
-                cat << EOF > Dockerfile
-                FROM tomee
-                COPY webapp/target/webapp.war /usr/local/tomee/webapps/test.war
-                EOF
-                cd /home/azureuser/myagent/_work/2/s;docker build -t myreg1241.azurecr.io/tomcat .
+- stage: CreateDockerfileandImage
+  displayName: CreateDockerfileandImage
+  jobs:
+  - job: CreateDockerfile
+    displayName: CreateDockerfile
+    steps:
+    - task: Bash@3
+      inputs:
+        targetType: inline
+        script: |
+          cd /home/azureuser/myagent/_work/2/s
+          cat <<EOF > Dockerfile
+          FROM tomee
+          COPY webapp/target/webapp.war /usr/local/tomee/webapps/test.war
+          EOF
 
-  
+  - job: CreateDockerImage
+    displayName: CreateDockerImage
+    steps:
+    - task: Bash@3
+      inputs:
+        targetType: inline
+        script: |
+          cd /home/azureuser/myagent/_work/2/s
+          docker build -t myreg1241.azurecr.io/tomcat .
