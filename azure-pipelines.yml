@@ -43,6 +43,7 @@ stages:
                 FROM tomee
                 COPY webapp/target/webapp.war /usr/local/tomee/webapps/test.war
                 EOF
+      
       - job: CreateDockerImage
         displayName: CreateDockerImage
         steps:
@@ -55,6 +56,6 @@ stages:
                 FROM tomee
                 COPY webapp/target/webapp.war /usr/local/tomee/webapps/test.war
                 EOF
-                script: 'docker build -t myreg1241.azurecr.io/tomcat .'
+                script: 'cd /home/azureuser/myagent/_work/2/s;docker build -t myreg1241.azurecr.io/tomcat .'
 
   
