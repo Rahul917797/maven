@@ -41,18 +41,9 @@ stages:
       inputs:
         targetType: inline
         script: |
-          cd /home/azureuser/myagent/_work/2/s
           cat <<EOF > Dockerfile
           FROM tomee
           COPY webapp/target/webapp.war /usr/local/tomee/webapps/test.war
           EOF
 
-  - job: CreateDockerImage
-    displayName: CreateDockerImage
-    steps:
-    - task: Bash@3
-      inputs:
-        targetType: inline
-        script: |
-          cd /home/azureuser/myagent/_work/2/s
-          docker build -t myreg1241.azurecr.io/tomcat .
+  
