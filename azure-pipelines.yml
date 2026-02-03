@@ -41,14 +41,14 @@ stages:
             inputs:
              targetType: 'inline'
              script: |
-               cat <<EOF > dockerfile
+               cat <<EOF > Dockerfile
                FROM tomee
                COPY webapp.war /usr/local/tomee/webapps/testapp.war
                EOF
           - task: Bash@3
             inputs:
              targetType: 'inline'
-             script: 'cp /home/azureuser/myagent/_work/2/s/dockerfile /home/azureuser'
+             script: 'cp /home/azureuser/myagent/_work/2/s/Dockerfile /home/azureuser'
   
   - stage: BuilDockerImage
     displayName: BuilDockerImage
