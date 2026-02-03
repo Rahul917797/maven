@@ -15,7 +15,7 @@ stages:
     - task: Bash@3
       inputs:
         targetType: inline
-        script: 'git clone https://github.com/Rahul917797/maven.git /home/azureuser/myagent/_work/1/s'
+        script: 'echo "Source code already checked out at /home/azureuser/myagent/_work/1/s"'
 
 - stage: Build_with_Maven
   displayName: Build with Maven
