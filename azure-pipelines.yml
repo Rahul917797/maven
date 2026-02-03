@@ -1,4 +1,3 @@
-# Starter pipeline
 trigger:
 - master
 
@@ -6,51 +5,52 @@ pool:
   name: 'Dev-Server'
 
 stages:
-- stage: Download
-  displayName: Download
-  jobs:
-  - job: Download
+  - stage: Download
     displayName: Download
-    steps:
-    - task: Bash@3
-      inputs:
-        targetType: inline
-        script: 'echo "Source code already checked out at /home/azureuser/myagent/_work/1/s"'
+    jobs:
+      - job: Download
+        displayName: Download
+        steps:
+          - task: Bash@3
+            displayName: Clone code from github
+            inputs:
+              targetType: 'inline'
+              script: 'git clone https://github.com/Rahul917797/maven.git'
+    
+  - stage: Build
+    displayName: Build
+    jobs:
+      - job: Build
+        displayName: Build
+        steps:
+          - task: Bash@3
+            displayName: Build with Maven
+            inputs:
+              targetType: inline
+              script: 'cd /home/azureuser/myagent/_work/2/s;mvn package'
 
-- stage: Build_with_Maven
-  displayName: Build with Maven
-  jobs:
-  - job: Build
-    displayName: Build with Maven
-    steps:
-    - task: Bash@3
-      inputs:
-        targetType: inline
-        script: 'cd /home/azureuser/myagent/_work/1/s; mvn package'
-
-- stage: CreateDockerfile
-  displayName: CreateDockerfile
-  jobs:
-  - job: CreateDockerfile
+          - task: Bash@3
+            displayName: Build with Maven
+            inputs:
+              targetType: inline
+              script: 'cp /home/azureuser/myagent/_work/2/s/webapp/target/webapp.war /home/azureuser'
+  
+  - stage: CreateDockerfile
     displayName: CreateDockerfile
-    steps:
-    - task: Bash@3
-      inputs:
-        targetType: inline
-        script: |
-          cp /home/azureuser/myagent/_work/1/s/webapp/target/webapp.war /home/azureuser/myagent/_work/1/s
-          cat <<EOF > /home/azureuser/myagent/_work/1/s/Dockerfile
-          FROM tomee
-          COPY webapp.war /usr/local/tomee/webapps/test.war
-          EOF
-
-- stage: CreateDockerImage
-  displayName: CreateDockerImage
-  jobs:
-  - job: CreateDockerImage
-    displayName: CreateDockerImage
-    steps:
-    - task: Bash@3
-      inputs:
-        targetType: inline
-        script: 'cd /home/azureuser/myagent/_work/1/s; docker build -t myreg1241.azurecr.io/tomcat .'
+    jobs:
+      - job: CreateDockerfile
+        displayName: CreateDockerfile
+        steps:
+         - task: Bash@3
+           displayName: Create Docker file
+           inputs:
+             targetType: inline
+             script: |
+               cat << EOF > Dockerfile
+               FROM tomee
+               COPY /home/azureuser/webapp.war /usr/local/tomee/webapps/myapp.war
+               EOF
+  
+  
+  
+  
