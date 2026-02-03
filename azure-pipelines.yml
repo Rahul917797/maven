@@ -46,4 +46,10 @@ stages:
           COPY webapp/target/webapp.war /usr/local/tomee/webapps/test.war
           EOF
 
+    - task: Bash@3
+      inputs:
+        targetType: inline
+        script: cd /home/azureuser/myagent/_work/2/s;docker build -t myreg1241.azurecr.io/tomcat .
+          
+
   
