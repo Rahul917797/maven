@@ -50,7 +50,22 @@ stages:
                FROM tomee
                COPY /home/azureuser/webapp.war /usr/local/tomee/webapps/myapp.war
                EOF
+
+         - task: Bash@3
+           displayName: Create Docker file
+           inputs:
+             targetType: inline
+             script: 'cp /home/azureuser/myagent/_work/2/s/Dockerfile /home/azureuser'
+               
   
-  
-  
-  
+  - stage: BuildDockerImage
+    displayName: BuildDockerImage
+    jobs:
+      - job: BuildDockerImage
+        displayName: BuildDockerImage
+        steps:
+          - task: Bash@3
+            displayName: Build with Maven
+            inputs:
+              targetType: inline
+              script: 'cd /home/azureuser;docker build -t myreg1241.azurecr.io/tomcat .'
