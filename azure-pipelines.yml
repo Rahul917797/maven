@@ -13,9 +13,9 @@ stages:
         steps:
           - task: Bash@3
             inputs:
-             targetType: 'inline'
-             script: 'git clone https://github.com/Rahul917797/maven3.git'
-  
+              targetType: 'inline'
+              script: 'git clone https://github.com/Rahul917797/maven3.git'
+
   - stage: Build
     displayName: Build
     jobs:
@@ -24,13 +24,14 @@ stages:
         steps:
           - task: Bash@3
             inputs:
-             targetType: 'inline'
-             script: 'cd /home/azureuser/myagent/_work/2/s;mvn package'
+              targetType: 'inline'
+              script: 'cd /home/azureuser/myagent/_work/2/s;mvn package'
+
           - task: Bash@3
             inputs:
-             targetType: 'inline'
-             script: 'cp /home/azureuser/myagent/_work/2/s/webapp/target/webapp.war /home/azureuser'
-  
+              targetType: 'inline'
+              script: 'cp /home/azureuser/myagent/_work/2/s/webapp/target/webapp.war /home/azureuser/myagent/_work/2/s'
+
   - stage: CreateDockerFileandImage
     displayName: CreateDockerFile
     jobs:
@@ -39,17 +40,13 @@ stages:
         steps:
           - task: Bash@3
             inputs:
-             targetType: 'inline'
-             script: |
-               cat <<EOF > Dockerfile
-               FROM tomee
-               COPY webapp.war /usr/local/tomee/webapps/testapp.war
-               EOF
-          - task: Bash@3
-            inputs:
-             targetType: 'inline'
-             script: 'cp /home/azureuser/myagent/_work/2/s/Dockerfile /home/azureuser'
-  
+              targetType: 'inline'
+              script: |
+                cat <<EOF > /home/azureuser/myagent/_work/2/s/Dockerfile
+                FROM tomee
+                COPY webapp.war /usr/local/tomee/webapps/testapp.war
+                EOF
+
   - stage: BuilDockerImage
     displayName: BuilDockerImage
     jobs:
@@ -58,5 +55,5 @@ stages:
         steps:
           - task: Bash@3
             inputs:
-             targetType: 'inline'
-             script: 'cd /home/azureuser;docker build -t myreg1241.azurecr.io/tomcat .'
+              targetType: 'inline'
+              script: 'cd /home/azureuser/myagent/_work/2/s;docker build -t myreg1241.azurecr.io/tomcat .'
