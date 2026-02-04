@@ -93,3 +93,18 @@ stages:
               targetType: 'inline'
               script: |
                 ssh azureuser@64.236.154.57 docker run --name tomcat -d -P myreg1241.azurecr.io/tomcat 
+
+  - stage: DeployToAKS
+    displayName: DeployToAKS
+    jobs:
+      - job: DeployToAKS
+        displayName: DeployToAKS
+        steps:
+          - task: KubernetesManifest@1
+            inputs:
+              action: 'deploy'
+              connectionType: 'azureResourceManager'
+              azureSubscriptionConnection: 'DevOps-Subscription(5c3a765e-61bc-495a-a7de-9e0bef10c572)'
+              azureResourceGroup: 'myresource'
+              kubernetesCluster: 'cluster'
+              manifests: 'myapp.yaml'
