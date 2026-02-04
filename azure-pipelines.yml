@@ -57,3 +57,15 @@ stages:
             inputs:
               targetType: 'inline'
               script: 'cd /home/azureuser/myagent/_work/2/s;docker build -t myreg1241.azurecr.io/tomcat .'
+
+
+  - stage: PushDockerImage
+    displayName: PushDockerImage
+    jobs:
+      - job: PushDockerImage
+        displayName: PushDockerImage
+        steps:
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: 'docker push myreg1241.azurecr.io/tomcat'
