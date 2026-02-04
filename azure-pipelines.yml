@@ -68,7 +68,7 @@ stages:
               targetType: 'inline'
               script: |
                 cd /home/azureuser/myagent/_work/2/s
-                docker build -t myreg1241.azurecr.io/tomcat:latest .
+                docker build -t myreg1241.azurecr.io/myapp:latest .
 
   - stage: PushDockerImage
     displayName: PushDockerImage
@@ -80,7 +80,7 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                docker push myreg1241.azurecr.io/tomcat:latest
+                docker push myreg1241.azurecr.io/myapp:latest
 
   - stage: DeployToQA
     displayName: DeployToQA
@@ -92,7 +92,7 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                ssh azureuser@64.236.154.57 "docker rm -f tomcat || true && docker run --name tomcat -d -P myreg1241.azurecr.io/tomcat:latest"
+                ssh azureuser@64.236.154.57 "docker rm -f myapp || true && docker run --name myapp -d -P myreg1241.azurecr.io/myapp:latest"
 
   - stage: DeployToAKS
     displayName: DeployToAKS
