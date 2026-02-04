@@ -42,7 +42,6 @@ stages:
       - job: CreateDockerFileand
         displayName: CreateDockerFileand
         steps:
-
           - task: DownloadPipelineArtifact@2
             inputs:
               artifact: webapp
@@ -52,16 +51,17 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                cat <<EOF > /home/azureuser/myagent/_work/2/s/Dockerfile
+                cd /home/azureuser/myagent/_work/2/s
+                cat <<EOF > Dockerfile
                 FROM tomee
                 COPY webapp.war /usr/local/tomee/webapps/testapp.war
                 EOF
 
-  - stage: BuilDockerImage
-    displayName: BuilDockerImage
+  - stage: BuildDockerImage
+    displayName: BuildDockerImage
     jobs:
-      - job: BuilDockerImage
-        displayName: BuilDockerImage
+      - job: BuildDockerImage
+        displayName: BuildDockerImage
         steps:
           - task: Bash@3
             inputs:
@@ -92,7 +92,7 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                ssh azureuser@64.236.154.57 docker run --name tomcat -d -P myreg1241.azurecr.io/tomcat 
+                ssh azureuser@64.236.154.57 "docker rm -f tomcat || true && docker run --name tomcat -d -P myreg1241.azurecr.io/tomcat"
 
   - stage: DeployToAKS
     displayName: DeployToAKS
